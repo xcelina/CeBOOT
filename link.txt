@@ -1,0 +1,24 @@
+OUTPUT_ARCH(i386)
+OUTPUT_FORMAT("binary")
+
+MEMORY
+{
+  STAGE0 :    ORIGIN = 0x00007C00, LENGTH = 0x00000200
+  STAGE1 :    ORIGIN = 0x00010000, LENGTH = 0x00090000
+}
+
+SECTIONS
+{
+  .stage0 : AT(0x0000)
+  {
+    obj/stage0.s.o(.*)
+
+    . = 440;
+    obj/mbr.s.o(.text)
+  } >STAGE0
+
+  .stage1 : AT(0x0200)
+  {
+    obj/*(.*)
+  } >STAGE1
+}
